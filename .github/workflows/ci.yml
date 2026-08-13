@@ -12,6 +12,10 @@ jobs:
     name: tests / ${{ matrix.os }} / py${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 25
+    env:
+      # The generic ``mosaic`` module name can exist on hosted runners.
+      # Test this checkout's src-layout package; wheel-smoke covers installation.
+      PYTHONPATH: src
     strategy:
       fail-fast: false
       matrix:
