@@ -120,8 +120,13 @@ def _resolve_video_root(manifest: dict[str, Any]) -> Path:
 
 
 def _video_path(root: Path, row: dict[str, Any]) -> Path:
-    path = (root / Path(str(row["file_name"]))).resolve()
-    if os.path.commonpath((str(path), str(root))) != str(root) or not path.is_file():
+    resolved_root = Path(root).resolve()
+    path = (resolved_root / Path(str(row["file_name"]))).resolve()
+    try:
+        path.relative_to(resolved_root)
+    except ValueError:
+        raise FileNotFoundError(path) from None
+    if not path.is_file():
         raise FileNotFoundError(path)
     return path
 

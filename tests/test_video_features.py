@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import tempfile
 import time
 import unittest
@@ -10,6 +11,7 @@ import numpy as np
 
 from mosaic.video.features import (
     _decode_video_batch,
+    _video_path,
     decode_uniform_frames,
     load_video_feature_bundle,
     make_toy_video_feature_bundle,
@@ -37,9 +39,10 @@ class VideoFeatureTests(unittest.TestCase):
                     "repeated_tail_samples": index
                 }
 
+            decode_root = Path(str(root).swapcase()) if os.name == "nt" else root
             groups = _decode_video_batch(
                 rows,
-                root,
+                decode_root,
                 frames_per_video=2,
                 decode_workers=4,
                 decoder=decoder,
@@ -53,6 +56,8 @@ class VideoFeatureTests(unittest.TestCase):
                 for frames, _ in groups:
                     for image in frames:
                         image.close()
+            with self.assertRaises(FileNotFoundError):
+                _video_path(root, {"file_name": "../outside.mp4"})
 
     def test_parallel_decode_closes_successful_siblings_on_failure(self) -> None:
         class TrackedImage:
