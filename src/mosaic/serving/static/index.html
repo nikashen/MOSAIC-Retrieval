@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MOSAIC Retrieval Workbench</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="app-bar">
+    <div class="bar-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">M</span>
+        <div>
+          <strong>MOSAIC Retrieval</strong>
+          <span>Multimodal evidence workbench</span>
+        </div>
+      </div>
+      <div id="status" class="system-status" aria-live="polite">
+        <span class="status-dot"></span>
+        <span>Checking artifacts</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <nav class="view-tabs" aria-label="检索演示轨道">
+      <button class="view-tab is-active" type="button" data-view="coco" aria-selected="true">
+        <span class="tab-index">01</span>
+        COCO 图文检索
+      </button>
+      <button class="view-tab" type="button" data-view="video" aria-selected="false">
+        <span class="tab-index">02</span>
+        MSR-VTT 视频证据
+      </button>
+    </nav>
+
+    <section id="view-coco" class="view is-active" data-view-panel="coco">
+      <div class="view-heading">
+        <div>
+          <span class="eyebrow">LIVE OFFLINE RETRIEVAL</span>
+          <h1>COCO 图文检索</h1>
+          <p>冻结 CLIP 主干与已训练 adapter 对查询编码，在 5,000 个内容向量中执行全库检索。下方增量对应 image-only item view，不是融合门控增益。</p>
+        </div>
+        <div class="scope-chip">COCO-5K · Image/Text</div>
+      </div>
+
+      <section class="metric-strip" aria-label="COCO External Final evidence">
+        <div class="metric-cell">
+          <span class="metric-label">Image-only Text → Image R@1</span>
+          <strong>+2.89 <small>pp</small></strong>
+          <span>95% CI [+2.00, +3.92]</span>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">Image-only Text → Image R@10</span>
+          <strong>+1.36 <small>pp</small></strong>
+          <span>95% CI [+0.78, +1.96]</span>
+        </div>
+        <div class="metric-cell">
+          <span class="metric-label">External Final</span>
+          <strong>1,000 <small>images</small></strong>
+          <span>5,003 captions · one-time read</span>
+        </div>
+      </section>
+
+      <section class="search-workspace">
+        <label for="query">文本查询</label>
+        <div class="search-row">
+          <input id="query" value="a dog running on grass" maxlength="500" autocomplete="off">
+          <button id="run" class="primary-command" type="button">检索 Top 10</button>
+        </div>
+        <div class="search-meta">
+          <span id="model">Loading model contract</span>
+          <span id="index">Loading index contract</span>
+        </div>
+      </section>
+
+      <div id="results" class="image-results" aria-live="polite"></div>
+
+      <section class="boundary-band">
+        <div>
+          <span class="eyebrow">EVIDENCE BOUNDARY</span>
+          <h2>离线内容检索，不外推线上收益</h2>
+        </div>
+        <p>结果来自本地 COCO 索引。当前证据不包含线上流量、A/B 实验、并发或生产 SLA。</p>
+      </section>
+    </section>
+
+    <section id="view-video" class="view" data-view-panel="video" hidden>
+      <div class="view-heading">
+        <div>
+          <span class="eyebrow">FROZEN FINAL EVIDENCE</span>
+          <h1>MSR-VTT 视频检索</h1>
+          <p>12 帧流式 CLIP 与 temporal attention 的 one-caption 1K-A 冻结评测。</p>
+        </div>
+        <div class="scope-chip scope-chip-video">MSR-VTT-1K-A · Video/Text</div>
+      </div>
+
+      <section class="integrity-notice" aria-label="排名证据边界">
+        <strong>证据浏览模式</strong>
+        <p id="ranking-boundary">正在读取冻结报告。此页面不会生成未保存的逐查询视频排名。</p>
+      </section>
+
+      <section id="video-headline" class="metric-strip metric-strip-video" aria-label="MSR-VTT Frozen Final metrics">
+        <div class="metric-cell skeleton"></div>
+        <div class="metric-cell skeleton"></div>
+        <div class="metric-cell skeleton"></div>
+        <div class="metric-cell skeleton"></div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">MODEL COMPARISON</span>
+            <h2>双向全库检索</h2>
+          </div>
+          <span id="video-coverage" class="section-note">Loading evidence</span>
+        </div>
+        <div class="table-wrap">
+          <table class="model-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>T2V R@1</th>
+                <th>T2V R@10</th>
+                <th>V2T R@1</th>
+                <th>V2T R@10</th>
+                <th>T2V MRR</th>
+              </tr>
+            </thead>
+            <tbody id="video-models"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">PAIRED BOOTSTRAP</span>
+            <h2>Temporal 相对 mean pooling</h2>
+          </div>
+          <span class="section-note">1,000 video-cluster replicates</span>
+        </div>
+        <div id="video-deltas" class="delta-grid"></div>
+      </section>
+
+      <section class="section-block sample-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">ALLOWLISTED SOURCE MEDIA</span>
+            <h2>冻结 Test 样本浏览</h2>
+          </div>
+          <span id="sample-count" class="section-note">Checking local media</span>
+        </div>
+        <div id="video-samples" class="video-grid"></div>
+      </section>
+
+      <section class="protocol-grid">
+        <div>
+          <span class="protocol-key">Protocol</span>
+          <strong>JSFusion 1K-A</strong>
+          <p id="protocol-query">One official query caption per video</p>
+        </div>
+        <div>
+          <span class="protocol-key">Selection</span>
+          <strong>Dev-only checkpoint</strong>
+          <p>Test 不参与模型或 epoch 选择</p>
+        </div>
+        <div>
+          <span class="protocol-key">Input</span>
+          <strong>12 visual frames</strong>
+          <p>不使用音频、ASR 或 OCR</p>
+        </div>
+        <div>
+          <span class="protocol-key">Audit</span>
+          <strong id="audit-state">Loading</strong>
+          <p id="audit-digest">Report binding pending</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

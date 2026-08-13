@@ -1,0 +1,17 @@
+{
+  "schema_version": "mosaic.final_audit.v1",
+  "status": "complete",
+  "input_commit": "a19d646e724f0a97657ceb333453d163f44a7493",
+  "manifest_sha256": "4e5b85a8e6a8a9f01a8a91b2e1e30f4170810c77af8a00ab1ff3f5df7764bfa2",
+  "feature_sha256": "d70271ab5e1f3acfc7e62d67134fe80885e04450a806653b9f6a079d936262b2",
+  "config_sha256": "3039cfe8e8fdfe13043ab0228bc2f70d418dcb7b95f72dde1e7f4f95f7c72b3c",
+  "report_sha256": "6642c895481a042183d59f27498d5289d02f6de13d492dda224e107b450cc6ae",
+  "report_markdown_sha256": "47b399f6899428214cfe133af256457e997249f8d7e8dc3deb0a116d49a3637e",
+  "metadata_correction": {
+    "core_metrics_statistics_sha256": "1e25e854d4d71c32ac282dfd8e74d8a53a733e344b128080dde2136b5e5702c8",
+    "previous_report_sha256": "f6d2c52fb2cf22dfee6244a193d92e15ce5a8e60d2eedad608d30ee818687525",
+    "new_report_sha256": "6642c895481a042183d59f27498d5289d02f6de13d492dda224e107b450cc6ae",
+    "ablation_sha256": "828bf64dbd399269b60315bf86cdce5214a0add4a8caa30b3ab2c16a8dad3220",
+    "external_metrics_or_statistics_reread": false
+  }
+}

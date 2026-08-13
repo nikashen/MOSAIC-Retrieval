@@ -1,0 +1,71 @@
+{
+  "experiment_id": "mosaic_msrvtt_1ka_v1",
+  "dataset": {
+    "name": "MSR-VTT-1K-A",
+    "mirror": "friedrichor/MSR-VTT",
+    "mirror_commit": "c1af215a96934854f42683c19c51391aaee6f962",
+    "protocol": "JSFusion 1K-A",
+    "train_videos": 9000,
+    "test_videos": 1000,
+    "dev_method": "lowest sha256(mosaic-msrvtt-dev-v1:video_id), frozen 1000 of train-9k",
+    "train_after_dev": 8000,
+    "test_caption_policy": "one official 1K-A query caption per video",
+    "video_id_disjoint": true
+  },
+  "features": {
+    "backbone": "openai/clip-vit-base-patch32",
+    "backbone_revision": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "backbone_weight_sha256": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f",
+    "backbone_frozen": true,
+    "frames_per_video": 12,
+    "sampling": "uniform midpoint of equal-duration bins",
+    "embedding_dim": 512,
+    "decode_backend": "imageio-ffmpeg bundled binary",
+    "frame_size": 224,
+    "storage_dtype": "float16",
+    "video_batch_size": 16,
+    "decode_workers": 8,
+    "image_batch_size": 32,
+    "text_batch_size": 256
+  },
+  "model": {
+    "aggregators": ["mean", "max", "temporal_attention"],
+    "hidden_dim": 256,
+    "dropout": 0.1,
+    "temperature_init": 0.07,
+    "hard_negative_weight": 0.1,
+    "hard_negative_top_k": 8,
+    "teacher_preservation_weight": 0.1
+  },
+  "training": {
+    "seed": 20260730,
+    "epochs": 10,
+    "batch_size": 64,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "device": "auto",
+    "caption_sampling": "one sha256(seed:epoch:video_id)-selected caption per train video per epoch",
+    "test_rows_read": false
+  },
+  "selection": {
+    "metric": "mean(text_to_video R@1, text_to_video R@10, video_to_text R@1, video_to_text R@10)",
+    "baseline": "frozen_clip_mean_pool",
+    "directional_r10_max_drop": 0.002,
+    "selection_split": "dev_only",
+    "test_metrics_used_for_selection": false
+  },
+  "evaluation": {
+    "ks": [1, 5, 10, 50],
+    "bootstrap_replicates": 1000,
+    "bootstrap_seed": 20260731,
+    "cluster": "video_id",
+    "test_protocol": "JSFusion 1K-A one query caption per video",
+    "formal_runs_per_audit_name": 1
+  },
+  "claim_boundary": {
+    "audio_asr_used": false,
+    "ocr_used": false,
+    "online_traffic": false,
+    "sota_claimed": false
+  }
+}

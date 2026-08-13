@@ -1,0 +1,61 @@
+{
+  "schema_version": "mosaic.video_dev_attribution_config.v1",
+  "experiment_id": "mosaic_msrvtt_dev_attribution_v1",
+  "scope": "train_dev_only_never_open_test",
+  "base_config": "configs/msrvtt_1ka_v1.json",
+  "seeds": [20260730, 20260731, 20260732],
+  "variants": [
+    {
+      "name": "mean_projection",
+      "aggregator": "mean",
+      "hidden_dim": 256,
+      "hard_negative_weight": 0.1,
+      "teacher_preservation_weight": 0.1,
+      "purpose": "isolate trainable projections without temporal attention"
+    },
+    {
+      "name": "mean_projection_capacity_matched",
+      "aggregator": "mean",
+      "hidden_dim": 324,
+      "hard_negative_weight": 0.1,
+      "teacher_preservation_weight": 0.1,
+      "purpose": "match the temporal model parameter budget within 0.1 percent"
+    },
+    {
+      "name": "temporal_full",
+      "aggregator": "temporal_attention",
+      "hidden_dim": 256,
+      "hard_negative_weight": 0.1,
+      "teacher_preservation_weight": 0.1,
+      "purpose": "full pre-registered video model"
+    },
+    {
+      "name": "temporal_no_hard_negative",
+      "aggregator": "temporal_attention",
+      "hidden_dim": 256,
+      "hard_negative_weight": 0.0,
+      "teacher_preservation_weight": 0.1,
+      "purpose": "hard-negative loss attribution"
+    },
+    {
+      "name": "temporal_no_teacher",
+      "aggregator": "temporal_attention",
+      "hidden_dim": 256,
+      "hard_negative_weight": 0.1,
+      "teacher_preservation_weight": 0.0,
+      "purpose": "teacher-preservation attribution"
+    }
+  ],
+  "paired_comparisons": [
+    ["temporal_full", "mean_projection"],
+    ["temporal_full", "mean_projection_capacity_matched"],
+    ["temporal_full", "temporal_no_hard_negative"],
+    ["temporal_full", "temporal_no_teacher"]
+  ],
+  "claim_boundary": {
+    "test_accessed": false,
+    "selection_or_final_changed": false,
+    "post_final_dev_diagnostic": true,
+    "causal_component_claim_requires_consistent_seedwise_direction": true
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "experiment_id": "mosaic_coco5k_v1",
+  "dataset": {
+    "name": "COCO-2017-val-captions",
+    "images": 5000,
+    "captions_per_image": 5,
+    "split_method": "sha256(image_id + split_salt) modulo 1000",
+    "split_salt": "mosaic-coco5k-v1",
+    "fractions": {"train": 0.70, "dev": 0.15, "test": 0.15},
+    "caption_leakage_policy": "all five captions stay with their image; no image crosses splits"
+  },
+  "backbone": {
+    "name": "openai/clip-vit-base-patch32",
+    "source": "HuggingFace mirror or official checkpoint",
+    "frozen": true,
+    "image_size": 224
+  },
+  "model": {
+    "embedding_dim": 512,
+    "projection_hidden_dim": 512,
+    "dropout": 0.10,
+    "modality_dropout": 0.15,
+    "temperature_init": 0.07,
+    "hard_negative_top_k": 8,
+    "hard_negative_weight": 0.10,
+    "teacher_preservation_weight": 0.10,
+    "reranker_hidden_dim": 256
+  },
+  "training": {
+    "seed": 20260723,
+    "epochs": 12,
+    "batch_size": 32,
+    "gradient_accumulation": 2,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "num_workers": 0,
+    "amp": true,
+    "device": "auto"
+  },
+  "evaluation": {
+    "ks": [1, 5, 10, 50],
+    "bootstrap_replicates": 1000,
+    "bootstrap_seed": 20260724,
+    "cluster": "image_id",
+    "paired_ci": "percentile_2.5_97.5"
+  },
+  "provenance": {
+    "report_policy": "freeze input commit before final test; never regenerate report to chase HEAD",
+    "safe_npz": "allow_pickle_false"
+  }
+}

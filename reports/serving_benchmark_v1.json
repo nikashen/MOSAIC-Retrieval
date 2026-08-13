@@ -1,0 +1,18 @@
+{
+  "schema_version": "mosaic.serving_benchmark.v1",
+  "scope": "in_process_vector_search_not_http_text_encoding",
+  "backend": "faiss.IndexFlatIP",
+  "items": 5000,
+  "dimension": 512,
+  "requests": 1000,
+  "top_k": 10,
+  "latency_ms": {
+    "mean": 0.3803821999572392,
+    "p50": 0.3599500014388468,
+    "p95": 0.48011000235419476,
+    "p99": 0.7421959986459111,
+    "max": 1.1727000019163825
+  },
+  "throughput_qps_sequential": 2628.934792722728,
+  "claim_boundary": "single-process local exact-index microbenchmark; no network/concurrency/SLA claim"
+}

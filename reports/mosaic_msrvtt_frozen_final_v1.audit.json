@@ -1,0 +1,47 @@
+{
+  "schema_version": "mosaic.msrvtt_final_audit.v1",
+  "status": "completed",
+  "started_at": "2026-07-23T13:49:03.595372+00:00",
+  "input_commit": "4cf63f01a0bb81e6043535c470203177cafc5ea6",
+  "policy": "O_EXCL reservation before this finalizer loads the frozen derived Test features or computes retrieval metrics; feature extraction occurred after Dev freeze and did not compute selection metrics",
+  "completed_at": "2026-07-23T13:49:06.535824+00:00",
+  "inputs": {
+    "test_manifest": {
+      "path": "data/processed/msrvtt_test_1ka_v1.json",
+      "sha256": "a9918c9e913e2520b2906a420336debb71fd4fa475e14a1d2712bb5188662851",
+      "bytes": 248708
+    },
+    "test_features": {
+      "path": "artifacts/mosaic_msrvtt_1ka_v1/test_clip_features.npz",
+      "sha256": "701ea32f5718ca818d3e90f761629a21ed5386ea0d64e6d4a694ae3cc2a146eb",
+      "bytes": 12329356
+    },
+    "checkpoint_weights": {
+      "path": "artifacts/mosaic_msrvtt_1ka_v1/video_encoder.safetensors",
+      "sha256": "1c6aef883e33ac11baa936065b35dd70213b3fa6d3a6b02e1790c339baab8580",
+      "bytes": 2668528
+    },
+    "checkpoint_config": {
+      "path": "artifacts/mosaic_msrvtt_1ka_v1/video_encoder_config.json",
+      "sha256": "331117a0d3fb02eb2318cac16ba30e4da889a8418d3e0435a2806639cea8f620",
+      "bytes": 902
+    },
+    "training_summary": {
+      "path": "artifacts/mosaic_msrvtt_1ka_v1/training_summary.json",
+      "sha256": "29bd701ea09b429e1ab311a1ab94c302dc5f9d333d1b95bca1b81935cd88c8ee",
+      "bytes": 7973
+    },
+    "config": {
+      "path": "configs/msrvtt_1ka_v1.json",
+      "sha256": "30adc57fe13d45b833a7d5012c04578a2daa825ff244e523d79bed5150e25bda",
+      "bytes": 2301
+    }
+  },
+  "evaluation_sha256": "d2db1ff29fe78782519cbd2745d40c4f05ff855fc3e27bc94dff275fd32692e6",
+  "report": {
+    "json_path": "reports/mosaic_msrvtt_frozen_final_v1.json",
+    "json_sha256": "6fec06e57f9fda69296296dbfcfb816b29e0664203129eb080f6746dd48801e4",
+    "markdown_path": "reports/mosaic_msrvtt_frozen_final_v1.md",
+    "markdown_sha256": "2bca5d53adec1554d30fcaef00828788007a5596379f2bfdf017b5ec89d5bdc1"
+  }
+}

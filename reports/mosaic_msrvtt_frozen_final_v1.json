@@ -1,0 +1,287 @@
+{
+  "schema_version": "mosaic.msrvtt_frozen_final.v1",
+  "experiment_id": "mosaic_msrvtt_1ka_v1",
+  "created_at": "2026-07-23T13:49:06.535824+00:00",
+  "protocol": {
+    "dataset": "MSR-VTT-1K-A",
+    "mirror": "friedrichor/MSR-VTT",
+    "mirror_commit": "c1af215a96934854f42683c19c51391aaee6f962",
+    "query_policy": "one official JSFusion query caption per video",
+    "selection": "all model/epoch decisions completed on deterministic Dev only",
+    "bootstrap_cluster": "video_id"
+  },
+  "provenance": {
+    "input_commit": "4cf63f01a0bb81e6043535c470203177cafc5ea6",
+    "training_input_commit": "3feffb2f1ac6c3d6cf77bfbd567fe2cc8992b83e",
+    "files": {
+      "test_manifest": {
+        "path": "data/processed/msrvtt_test_1ka_v1.json",
+        "sha256": "a9918c9e913e2520b2906a420336debb71fd4fa475e14a1d2712bb5188662851",
+        "bytes": 248708
+      },
+      "test_features": {
+        "path": "artifacts/mosaic_msrvtt_1ka_v1/test_clip_features.npz",
+        "sha256": "701ea32f5718ca818d3e90f761629a21ed5386ea0d64e6d4a694ae3cc2a146eb",
+        "bytes": 12329356
+      },
+      "checkpoint_weights": {
+        "path": "artifacts/mosaic_msrvtt_1ka_v1/video_encoder.safetensors",
+        "sha256": "1c6aef883e33ac11baa936065b35dd70213b3fa6d3a6b02e1790c339baab8580",
+        "bytes": 2668528
+      },
+      "checkpoint_config": {
+        "path": "artifacts/mosaic_msrvtt_1ka_v1/video_encoder_config.json",
+        "sha256": "331117a0d3fb02eb2318cac16ba30e4da889a8418d3e0435a2806639cea8f620",
+        "bytes": 902
+      },
+      "training_summary": {
+        "path": "artifacts/mosaic_msrvtt_1ka_v1/training_summary.json",
+        "sha256": "29bd701ea09b429e1ab311a1ab94c302dc5f9d333d1b95bca1b81935cd88c8ee",
+        "bytes": 7973
+      },
+      "config": {
+        "path": "configs/msrvtt_1ka_v1.json",
+        "sha256": "30adc57fe13d45b833a7d5012c04578a2daa825ff244e523d79bed5150e25bda",
+        "bytes": 2301
+      }
+    }
+  },
+  "training_selection": {
+    "split": "dev",
+    "metric": "mean(text_to_video R@1/R@10, video_to_text R@1/R@10)",
+    "baseline": "frozen_clip_mean_pool",
+    "baseline_score": 0.6065375,
+    "best_score": 0.645075,
+    "baseline_text_to_video": {
+      "recall_at": {
+        "1": 0.3289,
+        "10": 0.65325
+      },
+      "mrr": 0.438020159220708,
+      "median_rank": 4.0,
+      "mean_rank": 42.53085,
+      "queries": 20000
+    },
+    "baseline_video_to_text": {
+      "recall_at": {
+        "1": 0.564,
+        "10": 0.88
+      },
+      "mrr": 0.6687684996683793,
+      "median_rank": 1.0,
+      "mean_rank": 6.187,
+      "queries": 1000
+    },
+    "directional_r10_max_drop": 0.002,
+    "test_labels_accessed": false
+  },
+  "evaluation": {
+    "schema_version": "mosaic.video_evaluation_suite.v1",
+    "split": "test",
+    "catalog_scope": "full selected split catalog",
+    "manifest_sha256": "48ad8c468c9332aeb6edf74527a245406ed28d86cfc18a76545926079861e873",
+    "feature_metadata_sha256": "613ca2958d1f4149140e1bec723279da0bfa3a68ce6432041a4e0482fae5a5ef",
+    "videos": 1000,
+    "captions": 1000,
+    "checkpoint_epoch": 10,
+    "models": {
+      "frozen_clip_mean_pool": {
+        "text_to_video": {
+          "recall_at": {
+            "1": 0.304,
+            "5": 0.524,
+            "10": 0.631,
+            "50": 0.829
+          },
+          "mrr": 0.4093900243982039,
+          "median_rank": 5.0,
+          "mean_rank": 42.834,
+          "queries": 1000
+        },
+        "video_to_text": {
+          "recall_at": {
+            "1": 0.27,
+            "5": 0.51,
+            "10": 0.61,
+            "50": 0.851
+          },
+          "mrr": 0.38337869882994746,
+          "median_rank": 5.0,
+          "mean_rank": 37.436,
+          "queries": 1000
+        },
+        "rank_sha256": {
+          "text_to_video": "e30a3f03c8ce21e05e8b8c9dc238f2bbf07a4906e013c975665fc8c711c6c987",
+          "video_to_text": "785cadd186e5f75d3de898d0062c13ec2907df7881bb09100fd2215c59f03356"
+        }
+      },
+      "frozen_clip_max_pool": {
+        "text_to_video": {
+          "recall_at": {
+            "1": 0.197,
+            "5": 0.399,
+            "10": 0.506,
+            "50": 0.735
+          },
+          "mrr": 0.29932043532492725,
+          "median_rank": 10.0,
+          "mean_rank": 78.722,
+          "queries": 1000
+        },
+        "video_to_text": {
+          "recall_at": {
+            "1": 0.174,
+            "5": 0.381,
+            "10": 0.479,
+            "50": 0.724
+          },
+          "mrr": 0.27616043078109964,
+          "median_rank": 13.0,
+          "mean_rank": 65.777,
+          "queries": 1000
+        },
+        "rank_sha256": {
+          "text_to_video": "7c10d5b61c6c522d4f7a66247ee16d4d5c57044ff25df3de5c4147a9a2079813",
+          "video_to_text": "46409ee631fb257c077c17d84bf31d33446de465056f50d99c4e1e4fdd8b5401"
+        }
+      },
+      "mosaic_trained_temporal_attention": {
+        "text_to_video": {
+          "recall_at": {
+            "1": 0.335,
+            "5": 0.608,
+            "10": 0.71,
+            "50": 0.914
+          },
+          "mrr": 0.45787841500428006,
+          "median_rank": 3.0,
+          "mean_rank": 22.445,
+          "queries": 1000
+        },
+        "video_to_text": {
+          "recall_at": {
+            "1": 0.311,
+            "5": 0.596,
+            "10": 0.708,
+            "50": 0.902
+          },
+          "mrr": 0.4453054264089142,
+          "median_rank": 3.0,
+          "mean_rank": 20.666,
+          "queries": 1000
+        },
+        "rank_sha256": {
+          "text_to_video": "c365218f8b52e5f06ec08047f9da1b1758ac60a02ef2bae542a089150fffdff7",
+          "video_to_text": "3d873900812d0d3c1a6654eb47e67835d23f3bbd5cfee9537761d1f5a125dd03"
+        }
+      }
+    },
+    "paired_video_cluster_bootstrap_trained_vs_mean": {
+      "text_to_video": {
+        "recall@1": {
+          "delta": 0.031,
+          "lower": 0.007,
+          "upper": 0.05502499999999998,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260731
+        },
+        "recall@5": {
+          "delta": 0.084,
+          "lower": 0.058,
+          "upper": 0.111,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260732
+        },
+        "recall@10": {
+          "delta": 0.079,
+          "lower": 0.056,
+          "upper": 0.10402499999999998,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260733
+        },
+        "recall@50": {
+          "delta": 0.085,
+          "lower": 0.064,
+          "upper": 0.106,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260734
+        },
+        "mrr": {
+          "delta": 0.04848839060607621,
+          "lower": 0.0311402754153424,
+          "upper": 0.06618523184717177,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260735
+        }
+      },
+      "video_to_text": {
+        "recall@1": {
+          "delta": 0.041,
+          "lower": 0.013975000000000001,
+          "upper": 0.06802499999999999,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260736
+        },
+        "recall@5": {
+          "delta": 0.086,
+          "lower": 0.058975,
+          "upper": 0.114,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260737
+        },
+        "recall@10": {
+          "delta": 0.098,
+          "lower": 0.073,
+          "upper": 0.124,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260738
+        },
+        "recall@50": {
+          "delta": 0.051,
+          "lower": 0.03,
+          "upper": 0.07,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260739
+        },
+        "mrr": {
+          "delta": 0.06192672757896671,
+          "lower": 0.041273080989786354,
+          "upper": 0.08335236554689933,
+          "alpha": 0.05,
+          "replicates": 1000,
+          "clusters": 1000,
+          "seed": 20260740
+        }
+      }
+    }
+  },
+  "claim_boundary": {
+    "audio_asr_used": false,
+    "ocr_used": false,
+    "online_traffic": false,
+    "sota_claimed": false,
+    "public_data_offline_only": true,
+    "clip_pretraining_overlap_unknown": true,
+    "one_caption_protocol_not_all_caption_protocol": true,
+    "dataset_license_declared_by_mirror": false
+  },
+  "evaluation_sha256": "d2db1ff29fe78782519cbd2745d40c4f05ff855fc3e27bc94dff275fd32692e6"
+}

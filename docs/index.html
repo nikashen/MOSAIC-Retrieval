@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="MOSAIC-Retrieval multimodal retrieval evidence workbench">
+  <title>MOSAIC Retrieval · Evidence Workbench</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="MOSAIC Retrieval 首页">
+      <span class="brand-mark" aria-hidden="true">M</span>
+      <span><strong>MOSAIC Retrieval</strong><small>Evidence workbench</small></span>
+    </a>
+    <nav aria-label="主导航">
+      <a href="#results">冻结结果</a>
+      <a href="#lab">检索实验室</a>
+      <a href="#protocol">协议</a>
+      <a href="#claims">边界</a>
+    </nav>
+    <a class="repo-link" href="https://github.com/nikashen/MOSAIC-Retrieval">GitHub ↗</a>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">MULTIMODAL RETRIEVAL · AUDITED EVIDENCE</p>
+        <h1>从冻结 CLIP 到<br><span>可审计的图像 / 视频检索</span></h1>
+        <p class="hero-lead">在 4GB 显存约束下，训练轻量 residual adapter、模态门控与 temporal attention；用隔离的 Final、cluster bootstrap 和 fail-closed 审计约束结论。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#lab">打开检索实验室</a>
+          <a class="button ghost" href="https://github.com/nikashen/MOSAIC-Retrieval/blob/main/reports/evidence_card.md">阅读证据卡</a>
+        </div>
+        <div class="boundary-note"><span aria-hidden="true">●</span> Pages 仅展示聚合证据与代码绘制的合成卡片；不含 COCO/MSR-VTT 媒体、caption 或逐查询排名。</div>
+      </div>
+      <div class="hero-visual" aria-label="多模态检索管线示意图">
+        <div class="visual-grid"></div>
+        <div class="tower tower-image"><span>01</span><strong>IMAGE</strong><small>frozen CLIP</small></div>
+        <div class="tower tower-text"><span>02</span><strong>TEXT</strong><small>frozen CLIP</small></div>
+        <div class="flow flow-a"></div><div class="flow flow-b"></div>
+        <div class="fusion"><span>M</span><strong>GATED<br>FUSION</strong></div>
+        <div class="vector-cloud" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="visual-caption">512d normalized content space</div>
+      </div>
+    </section>
+
+    <section class="stat-rail" aria-label="项目摘要">
+      <div><strong>2</strong><span>独立冻结<br>证据链</span></div>
+      <div><strong>12</strong><span>帧 / 视频<br>流式抽样</span></div>
+      <div><strong>1k</strong><span>cluster<br>bootstrap</span></div>
+      <div><strong>44</strong><span>公共算法与<br>契约测试</span></div>
+    </section>
+
+    <section id="results" class="section results-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">FROZEN EXTERNAL EVIDENCE</p><h2>两条互不混写的 Final</h2></div>
+        <p>COCO 主表衡量 image-only T2I adapter；MSR-VTT 衡量视频时序聚合。两个协议、数据与审计文件分别冻结。</p>
+      </div>
+      <div class="track-tabs" role="tablist" aria-label="证据轨道">
+        <button class="track-tab is-active" role="tab" aria-selected="true" data-track="coco">COCO · Image/Text</button>
+        <button class="track-tab" role="tab" aria-selected="false" data-track="video">MSR-VTT · Video/Text</button>
+      </div>
+      <div class="metric-workspace">
+        <div class="metric-summary">
+          <span id="metric-scope" class="scope-pill">1,000 images · 5,003 captions</span>
+          <h3 id="metric-title">Image-only Text → Image</h3>
+          <div class="headline-delta"><strong id="metric-delta">+2.89</strong><span>pp · R@1</span></div>
+          <p id="metric-ci">95% CI [+2.00, +3.92] · paired image-cluster bootstrap</p>
+          <div class="legend"><span><i class="baseline"></i>Frozen baseline</span><span><i class="trained"></i>MOSAIC</span></div>
+        </div>
+        <div class="chart" id="metric-chart" aria-label="基线与 MOSAIC 指标比较"></div>
+      </div>
+    </section>
+
+    <section id="lab" class="section lab-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">SYNTHETIC INTERFACE LAB</p><h2>零下载检索交互</h2></div>
+        <p>选择一个合成 query，观察双塔相似度、门控权重与 Top-K 排序如何变化。数值是固定的合成 fixture，不是冻结评测证据。</p>
+      </div>
+      <div class="lab-grid">
+        <aside class="query-panel">
+          <label for="query">合成文本查询</label>
+          <select id="query">
+            <option value="runner">a runner crossing a bright field</option>
+            <option value="city">night traffic through a neon city</option>
+            <option value="ocean">a small boat on calm water</option>
+          </select>
+          <div class="mode-switch" role="group" aria-label="输入模态">
+            <button class="mode is-active" data-mode="full">Image + Text</button>
+            <button class="mode" data-mode="image">Image only</button>
+            <button class="mode" data-mode="text">Text only</button>
+          </div>
+          <div class="gate-card">
+            <div><span>image gate</span><strong id="image-gate">0.54</strong></div>
+            <div class="gate-track"><i id="image-gate-bar"></i></div>
+            <div><span>text gate</span><strong id="text-gate">0.46</strong></div>
+            <div class="gate-track text"><i id="text-gate-bar"></i></div>
+          </div>
+          <p class="fixture-label">SYNTHETIC FIXTURE · NOT DATASET OUTPUT</p>
+        </aside>
+        <div class="result-panel">
+          <div class="result-head"><span>Top 3 synthetic matches</span><span id="latency">0.38 ms · numpy exact</span></div>
+          <div id="synthetic-results" class="synthetic-results" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="protocol" class="section protocol-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">LEAKAGE-SAFE PROTOCOL</p><h2>训练、选择与 Final 分离</h2></div>
+        <p>Final 不是为了追逐 HEAD 重跑的分数；模型选择只读取 Dev，正式报告由互斥 audit 名称和哈希绑定。</p>
+      </div>
+      <ol class="protocol-flow">
+        <li><span>01</span><strong>Train</strong><p>冻结 CLIP 主干；训练 projection、gate 或 temporal aggregator。</p></li>
+        <li><span>02</span><strong>Dev select</strong><p>选择 epoch / reranker alpha；方向性 R@10 门禁防止单侧退化。</p></li>
+        <li><span>03</span><strong>Commit & freeze</strong><p>记录配置、checkpoint 与输入哈希；保持 tracked worktree clean。</p></li>
+        <li><span>04</span><strong>One-time Final</strong><p>O_EXCL 抢占审计名称，计算配对指标并绑定报告 digest。</p></li>
+      </ol>
+      <div class="attribution-card">
+        <div><p class="eyebrow">POST-FINAL DEV-ONLY ATTRIBUTION · 3 SEEDS</p><h3>时序对 T2V R@1 有小幅证据，hard-negative 未获独立支持</h3></div>
+        <div class="attribution-values"><span><strong>0.3633</strong> temporal R@1</span><span><strong>0.3547</strong> capacity-matched mean</span><span><strong>3 / 3</strong> R@1 CI 为正</span></div>
+      </div>
+    </section>
+
+    <section id="claims" class="section claims-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">CLAIM CONTROL</p><h2>能说什么，不能说什么</h2></div>
+      </div>
+      <div class="claim-grid">
+        <article class="claim allowed"><span>✓ SUPPORTED</span><h3>协议内正向差异</h3><ul><li>COCO image-only T2I adapter R@1/R@10 CI 为正</li><li>MSR-VTT temporal 对 mean 的四个核心 CI 为正</li><li>公开代码可运行 44 项无数据下载测试</li></ul></article>
+        <article class="claim blocked"><span>× NOT SUPPORTED</span><h3>不向外扩张</h3><ul><li>不是 SOTA、线上 A/B 或营收提升</li><li>不是生产并发 / SLA 证据</li><li>不声称 hard-negative 已被独立消融证明</li></ul></article>
+        <article class="claim boundary"><span>◇ PUBLICATION</span><h3>只发可授权资产</h3><ul><li>无原始图像、视频或 captions</li><li>无权重、feature、index 或逐 Query ranking</li><li>MIT 仅覆盖本项目自研代码与文档</li></ul></article>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>MOSAIC Retrieval · sanitized public snapshot v1.0.0</span><a href="https://github.com/nikashen/MOSAIC-Retrieval/releases/tag/v1.0.0">Release v1.0.0 ↗</a></footer>
+  <script src="app.js"></script>
+</body>
+</html>

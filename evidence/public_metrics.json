@@ -1,0 +1,100 @@
+{
+  "schema_version": "mosaic.public_metrics.v1",
+  "project": {
+    "name": "MOSAIC-Retrieval",
+    "public_snapshot_version": "1.0.0",
+    "historical_software_version": "0.2.2",
+    "backbone": "openai/clip-vit-base-patch32",
+    "backbone_frozen": true,
+    "public_repository": "https://github.com/nikashen/MOSAIC-Retrieval",
+    "pages": "https://nikashen.github.io/MOSAIC-Retrieval/"
+  },
+  "coco_external_final": {
+    "protocol": "COCO train2017 external final selected after adapter and Dev selection were frozen",
+    "reported_adapter_view": "text-to-image image-only full-catalog retrieval",
+    "images": 1000,
+    "captions": 5003,
+    "models": {
+      "zero_shot_clip": {"t2i_r1": 0.5018988607, "t2i_r10": 0.8930641615, "t2i_mrr": 0.6350759763},
+      "mosaic_adapter": {"t2i_r1": 0.5308814711, "t2i_r10": 0.9066560064, "t2i_mrr": 0.6579710707},
+      "adapter_plus_reranker": {"t2i_r1": 0.5408754747, "t2i_r10": 0.9196482111, "t2i_mrr": 0.6682032687}
+    },
+    "adapter_minus_zero_shot": {
+      "t2i_r1": {"delta": 0.0289, "ci_95": [0.0199666667, 0.0391666667]},
+      "t2i_r10": {"delta": 0.0136, "ci_95": [0.0078, 0.019605]},
+      "t2i_mrr": {"delta": 0.0228513353, "ci_95": [0.0165096673, 0.0293868976]}
+    },
+    "bootstrap": {"method": "paired image-cluster percentile bootstrap", "replicates": 1000, "clusters": 1000},
+    "trainable_parameters": {"adapter_and_fusion": 1316101, "interaction_reranker": 528897, "combined": 1844998},
+    "reranker_training": "trained on Train mined negatives; epoch and alpha=0.02 selected on Dev",
+    "limitations": [
+      "CLIP may have seen public COCO during internet-scale pretraining",
+      "offline public-data evidence only",
+      "the +2.89/+1.36 pp adapter result is image-only, not a fusion-gate gain",
+      "trained full fusion did not improve over zero-shot full fusion on this Final",
+      "reranker R@1 and MRR intervals cross zero even though its R@10 interval is positive"
+    ]
+  },
+  "msrvtt_frozen_final": {
+    "protocol": "JSFusion 1K-A, one official query caption per video",
+    "train_videos": 8000,
+    "dev_videos": 1000,
+    "test_videos": 1000,
+    "frames_per_video": 12,
+    "models": {
+      "frozen_clip_mean": {"t2v_r1": 0.304, "t2v_r10": 0.631, "v2t_r1": 0.270, "v2t_r10": 0.610},
+      "frozen_clip_max": {"t2v_r1": 0.197, "t2v_r10": 0.506, "v2t_r1": 0.174, "v2t_r10": 0.479},
+      "mosaic_temporal": {"t2v_r1": 0.335, "t2v_r10": 0.710, "v2t_r1": 0.311, "v2t_r10": 0.708}
+    },
+    "temporal_minus_mean": {
+      "t2v_r1": {"delta": 0.031, "ci_95": [0.007, 0.055025]},
+      "t2v_r10": {"delta": 0.079, "ci_95": [0.056, 0.104025]},
+      "v2t_r1": {"delta": 0.041, "ci_95": [0.013975, 0.068025]},
+      "v2t_r10": {"delta": 0.098, "ci_95": [0.073, 0.124]}
+    },
+    "bootstrap": {"method": "paired video-cluster percentile bootstrap", "replicates": 1000, "clusters": 1000},
+    "evaluation_sha256": "d2db1ff29fe78782519cbd2745d40c4f05ff855fc3e27bc94dff275fd32692e6",
+    "limitations": [
+      "the historical mirror declares no dataset license",
+      "one-caption 1K-A is not interchangeable with all-caption evaluation",
+      "no audio, ASR or OCR",
+      "offline evidence only"
+    ]
+  },
+  "dev_only_attribution": {
+    "seeds": [20260730, 20260731, 20260732],
+    "temporal": {"parameters": 666628, "t2v_r1_mean": 0.3633, "t2v_r10_mean": 0.7233333333},
+    "capacity_matched_mean": {"parameters": 667275, "t2v_r1_mean": 0.3546666667, "t2v_r10_mean": 0.7179},
+    "temporal_minus_capacity_matched_mean": {
+      "t2v_r1_ci_positive_all_seeds": true,
+      "t2v_r10_ci_positive_seeds": 2,
+      "t2v_r10_ci_crossing_zero_seeds": 1
+    },
+    "paired_ci_interpretation": "diagnostic only: each interval resamples the same Dev video clusters within one seed after Dev checkpoint selection; it excludes selection, seed and multiple-comparison uncertainty",
+    "evidence_strength": "weaker than Frozen Final: 15 run configs and shared inputs match embedded provenance, but per-run checkpoint hashes and a separate audit file were not recorded",
+    "hard_negative_independent_support": false,
+    "teacher_preservation_effect": "small and mixed outside T2V",
+    "test_accessed": false,
+    "final_model_changed": false
+  },
+  "publication_boundary": {
+    "raw_images_published": false,
+    "raw_videos_published": false,
+    "captions_or_queries_published": false,
+    "query_level_rankings_published": false,
+    "model_or_adapter_weights_published": false,
+    "derived_features_or_indexes_published": false,
+    "pages_uses_synthetic_interface_cards": true,
+    "online_ab_test": false,
+    "production_sla": false,
+    "sota_claim": false,
+    "raw_rank_metric_recomputation_available_in_public_snapshot": false,
+    "private_asset_chain_locally_verified_before_sanitization": true
+  },
+  "historical_provenance": {
+    "note": "Commit identifiers below belong to the non-public experimental history. Public verification is anchored by report hashes and evaluation digests.",
+    "coco_frozen_input_commit": "a19d646e724f0a97657ceb333453d163f44a7493",
+    "msrvtt_training_commit": "3feffb2f1ac6c3d6cf77bfbd567fe2cc8992b83e",
+    "msrvtt_final_input_commit": "4cf63f01a0bb81e6043535c470203177cafc5ea6"
+  }
+}

@@ -1,0 +1,71 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: tests / ${{ matrix.os }} / py${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: python -m pip install --upgrade pip setuptools wheel build
+      - run: python -m pip install ".[serve,dev]"
+      - run: python -m compileall -q src scripts tests
+      - run: python -B -m unittest discover -s tests -p "test_*.py" -v
+      - run: python -B scripts/verify_deployment_bundle.py
+      - run: python -B scripts/verify_public_release.py
+      - run: python -B docs/verify_pages.py
+      - run: python -m build
+
+  wheel-smoke:
+    name: wheel smoke / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.10"
+      - run: python -m pip install --upgrade pip build
+      - run: python -m build --wheel
+      - name: Import installed wheel
+        shell: bash
+        if: runner.os != 'Windows'
+        run: |
+          python -m venv .tmp/fresh
+          .tmp/fresh/bin/python -m pip install dist/*.whl
+          (cd /tmp && "$GITHUB_WORKSPACE/.tmp/fresh/bin/python" -c "import mosaic; print(mosaic.__version__)")
+      - name: Import installed wheel
+        shell: pwsh
+        if: runner.os == 'Windows'
+        run: |
+          python -m venv .tmp\fresh
+          $wheel = (Get-ChildItem dist\*.whl | Select-Object -First 1).FullName
+          .\.tmp\fresh\Scripts\python.exe -m pip install $wheel
+          Push-Location $env:TEMP
+          & "$env:GITHUB_WORKSPACE\.tmp\fresh\Scripts\python.exe" -c "import mosaic; print(mosaic.__version__)"
+          Pop-Location

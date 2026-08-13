@@ -1,0 +1,11 @@
+{
+  "schema_version": "mosaic.public_wording_correction.v1",
+  "scope": "public snapshot documentation only",
+  "reason": "clarify that the COCO Text-to-Image main table uses the image-only item view",
+  "original_frozen_markdown_sha256": "47b399f6899428214cfe133af256457e997249f8d7e8dc3deb0a116d49a3637e",
+  "corrected_public_markdown_sha256": "66b612c29da7d44379af86d7dbe1f58113a5e78f58e2030e43c3adbe0d22d154",
+  "frozen_json_sha256": "6642c895481a042183d59f27498d5289d02f6de13d492dda224e107b450cc6ae",
+  "metrics_or_statistics_changed": false,
+  "external_final_reread": false,
+  "historical_audit_modified": false
+}

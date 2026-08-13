@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mosaic-retrieval"
+version = "1.0.0"
+description = "Audited multimodal image/video-text retrieval and cold-start content encoder"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  {name = "nika", email = "129031523+nikashen@users.noreply.github.com"},
+]
+keywords = [
+  "multimodal-retrieval",
+  "clip",
+  "video-retrieval",
+  "information-retrieval",
+  "cold-start",
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+  "numpy>=1.26,<2.0",
+  "pillow>=10,<12",
+  "torch>=2.2,<2.7",
+  "torchvision>=0.17,<0.22",
+  "transformers>=4.45,<5",
+  "safetensors>=0.4,<1",
+  "scikit-learn>=1.5,<2",
+  "scipy>=1.11,<2",
+  "faiss-cpu>=1.8,<2",
+  "imageio-ffmpeg>=0.6,<1",
+]
+
+[project.optional-dependencies]
+serve = ["fastapi>=0.115,<1", "uvicorn[standard]>=0.30,<1"]
+dev = ["pytest>=8,<9", "httpx>=0.28,<0.29"]
+
+[project.urls]
+Homepage = "https://nikashen.github.io/MOSAIC-Retrieval/"
+Repository = "https://github.com/nikashen/MOSAIC-Retrieval"
+Issues = "https://github.com/nikashen/MOSAIC-Retrieval/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"mosaic.serving" = ["static/*.html", "static/*.css", "static/*.js"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,14 @@
+services:
+  mosaic:
+    build:
+      context: .
+    ports:
+      - "8050:8050"
+    environment:
+      HF_ENDPOINT: ${HF_ENDPOINT:-https://hf-mirror.com}
+      HF_HOME: /cache/huggingface
+    volumes:
+      - ./runtime-data/artifacts:/app/artifacts
+      - ./runtime-data/data:/app/data
+      - ./runtime-data/huggingface:/cache/huggingface
+    restart: unless-stopped

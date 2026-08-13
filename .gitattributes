@@ -1,0 +1,25 @@
+* text=auto
+*.py text eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.npz binary
+*.safetensors binary
+*.index binary
+
+# Frozen evidence files are byte-hash bound to their audit records. Preserve
+# their original bytes across Windows/Linux clones instead of normalizing EOLs.
+reports/mosaic_external_final_v1.json -text
+reports/mosaic_external_final_v1.md -text
+reports/mosaic_external_final_v1.audit.json -text
+reports/mosaic_msrvtt_frozen_final_v1.json -text
+reports/mosaic_msrvtt_frozen_final_v1.md -text
+reports/mosaic_msrvtt_frozen_final_v1.audit.json -text
